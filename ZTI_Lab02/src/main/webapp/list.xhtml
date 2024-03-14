@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<head>
+    <title>IGNORED</title>
+</head>
+
+<body>
+<ui:composition template="/templates/masterTemplate.xhtml">
+    <ui:define name="windowTitle">
+        #{msg.siteTitle}
+    </ui:define>
+
+
+    <ui:define name="content">
+        <div id="content">
+            #{msg.titleFormList}
+            <h:form>
+                <h:dataTable value="#{personBean.people}" var="record" border="1">
+                    <h:column>
+                        <!-- kolumna zawiera nazwiska osob -->
+                        <f:facet name="header">
+                            <f:verbatim>#{msg.Lastname}</f:verbatim>
+                        </f:facet>
+                        <h:outputText value="#{record.lname}"/>
+                    </h:column>
+                    <h:column>
+                        <!-- kolumna zawiera imiona osob -->
+                        <f:facet name="header">
+                            <f:verbatim>#{msg.Firstname}</f:verbatim>
+                        </f:facet>
+                        <h:outputText value="#{record.fname}"/>
+                    </h:column>
+                    <h:column>
+                        <!-- kolumna zawiera e-mail osob -->
+                        <f:facet name="header">
+                            <f:verbatim>#{msg.Email}</f:verbatim>
+                        </f:facet>
+                        <h:outputText value="#{record.email}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">
+                            <h:outputText value="#{msg.actionFormList}"/>
+                        </f:facet>
+                        [
+                        <h:commandLink id="View" action="view"
+                                       actionListener="#{personBean.selectPerson}">
+                            <h:outputText value="#{msg.viewLinkFormList}"/>
+                            <f:param id="viewId" name="id" value="#{record.id}"/>
+                        </h:commandLink>
+                        ]
+                        [
+                        <h:commandLink id="Edit" action="update"
+                                       actionListener="#{personBean.selectPerson}">
+                            <h:outputText value="#{msg.editLinkFormList}"/>
+                            <f:param id="editId" name="id" value="#{record.id}"/>
+                        </h:commandLink>
+                        ]
+                        [
+                        <h:commandLink id="Delete" action="list"
+                                       actionListener="#{personBean.deletePerson}">
+                            <h:outputText value="#{msg.delLinkFormList}"/>
+                            <f:param id="deleteId" name="id" value="#{record.id}"/>
+                        </h:commandLink>
+                        ]
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+
+</ui:composition>
+
+
+</body>
+
+
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Ajax: Serwis RESTful</title>
+    <script type="text/javascript">
+        var url = "http://localhost:8081/ZTI_Lab04-1.0-SNAPSHOT/api/jpa/person";
+
+        function _list() {
+            fetch(url)
+                .then(response => {
+                    response.json().then(data => {
+                        var txt = "";
+                        txt += "<table style=\"border: 1px solid black; border-collapse: collapse;\">"
+                        txt += "<tr><th>ID</th><th>Imie</th><th>Nazwisko</th><th>Miasto</th><th>Email</th><th>Telefon</th></tr>"
+                        for (let i = 0; i < data.length; i++)
+                            txt += "<tr><td>" + data[i].id + "</td><td>" + data[i].fname + "</td><td>" + data[i].lname + "</td><td>" + data[i].city + "</td><td>" + data[i].email + "</td><td>" + data[i].tel + "</td></tr>";
+                        document.getElementById('data').innerHTML = '';
+                        txt += "</table>"
+                        document.getElementById('result').innerHTML = txt;
+                    });
+                })
+        }
+
+        function _ins_form() {
+            var form = document.createElement("form");
+            var fnameInput = document.createElement("input");
+            fnameInput.type = "text";
+            fnameInput.name = "fname";
+            fnameInput.placeholder = "Imie";
+            fnameInput.required = true;
+
+            var lnameInput = document.createElement("input");
+            lnameInput.type = "text";
+            lnameInput.name = "lname";
+            lnameInput.placeholder = "Nazwisko";
+            lnameInput.required = true;
+
+            var cityInput = document.createElement("input");
+            cityInput.type = "text";
+            cityInput.name = "city";
+            cityInput.placeholder = "Miasto";
+            cityInput.required = true;
+
+            var emailInput = document.createElement("input");
+            emailInput.type = "text";
+            emailInput.name = "email";
+            emailInput.placeholder = "Email";
+            emailInput.required = true;
+
+            var telInput = document.createElement("input");
+            telInput.type = "text";
+            telInput.name = "tel";
+            telInput.placeholder = "Tel";
+            telInput.required = true;
+
+            var submitButton = document.createElement("button");
+            submitButton.type = "button";
+            submitButton.textContent = "Dodaj";
+            submitButton.onclick = function () {
+                if (form.checkValidity()) {
+                    var data = {
+                        fname: fnameInput.value,
+                        lname: lnameInput.value,
+                        city: cityInput.value,
+                        email: emailInput.value,
+                        tel: telInput.value
+                    };
+                    fetch(url, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => {
+                            alert("Dodano");
+                            form.reset();
+                            _list();
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            alert("Error");
+                        });
+
+                } else {
+                    alert("Wszystkie pola sa wymagane");
+                }
+
+
+            };
+
+            form.appendChild(fnameInput);
+            form.appendChild(lnameInput);
+            form.appendChild(cityInput);
+            form.appendChild(emailInput);
+            form.appendChild(telInput);
+            form.appendChild(submitButton);
+            document.getElementById('data').innerHTML = '';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('data').appendChild(form);
+        }
+
+
+        function _del_list() {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    var txt = "";
+                    for (let i = 0; i < data.length; i++) {
+                        txt += "<label><input type='checkbox' name='record' value='" + data[i].id + "'>" +
+                            data[i].id + " " + data[i].fname + " " + data[i].lname + "</label><br/>";
+                    }
+                    txt += "<button type='button' onclick='_deleteSelected()'>Usun wybrane osoby</button>";
+
+                    document.getElementById('data').innerHTML = txt;
+                    document.getElementById('result').innerHTML = '';
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Blad");
+                });
+        }
+
+        function _deleteSelected() {
+            var checkboxes = document.getElementsByName('record');
+            var selectedIds = [];
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    selectedIds.push(checkboxes[i].value);
+                }
+            }
+
+            var promises = [];
+            for (var i = 0; i < selectedIds.length; i++) {
+                var promise = fetch(url + "/" + selectedIds[i], {
+                    method: 'DELETE'
+                });
+                promises.push(promise);
+            }
+
+            Promise.all(promises)
+                .then(() => {
+                    alert("Wybrane rekordy zostaly usuniete");
+                    _list();
+                })
+                .catch(error => {
+                    console.error(error);
+                    alert("Podczas usuwania rekordow wystapil blad");
+                });
+        }
+
+
+        function _upd_list() {
+            var id = prompt("Wpisz ID osoby która chcesz poprawic:");
+            if (id == null) {
+                return;
+            }
+            var data = {};
+            data.id = id;
+            data.fname = prompt("Wpisz imie lub pozostaw puste pole, aby zachowac aktualna wartosc:");
+            data.lname = prompt("Wpisz nazwisko lub pozostaw puste pole, aby zachowac aktualna wartosc:");
+            data.city = prompt("Wpisz miasto lub pozostaw puste pole, aby zachowac aktualna wartosc:");
+            data.email = prompt("Wpisz email lub pozostaw puste pole, aby zachowac aktualna wartosc:");
+            data.tel = prompt("Wpisz miasto lub pozostaw puste pole, aby zachowac aktualna wartosc:");
+            fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(response.status + " " + response.statusText);
+                    }
+                    return response.text();
+                })
+                .then(result => {
+                    document.getElementById('data').innerHTML = '';
+                    document.getElementById('result').innerHTML = result;
+                })
+                .catch(error => {
+                    document.getElementById('data').innerHTML = '';
+                    document.getElementById('result').innerHTML = "Error" + error.message;
+                });
+        }
+
+    </script>
+</head>
+<body>
+<div style="text-align:center">
+    <table border="1" bgcolor="gray">
+        <tr>
+            <th><big>Test serwisu REST JAX-RS. Operacje CRUD.</big></th>
+        </tr>
+    </table>
+    <br/>
+    <form action="#">
+        <table>
+            <tr>
+                <td><input type="button" value="Pobranie danych z bazy" onclick="_list()"/></td>
+                <td><input type="button" value="Dodanie rekordu do bazy" onclick="_ins_form()"/></td>
+                <td><input type="button" value="Usuniecie rekordu z bazy" onclick="_del_list()"/></td>
+                <td><input type="button" value="Poprawa rekordu w bazie" onclick="_list();_upd_list()"/></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="data"></div>
+<div id="result"></div>
+</body>
+</html>

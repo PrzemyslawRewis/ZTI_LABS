@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<head>
+    <title>IGNORED</title>
+</head>
+
+<body>
+<ui:composition template="/templates/masterTemplate.xhtml">
+    <ui:define name="windowTitle">
+        #{msg.siteTitle}
+    </ui:define>
+    <ui:define name="content">
+        <div id="content">
+            #{msg.titleFormView}
+            <h:form>
+                <h:panelGrid columns="2" frame="hsides" cellspacing="2">
+                    <h:outputLabel for="fname" value="#{msg.Firstname}"/>
+                    <h:outputText id="fname" value="#{personBean.fname}"/>
+                    <h:outputLabel for="lname" value="#{msg.Lastname}"/>
+                    <h:outputText id="lname" value="#{personBean.lname}"/>
+                    <h:outputLabel for="city" value="#{msg.City}"/>
+                    <h:outputText id="city" value="#{personBean.city}"/>
+                    <h:outputLabel for="email" value="#{msg.Email}"/>
+                    <h:outputText id="email" value="#{personBean.email}"/>
+                    <h:outputLabel for="tel" value="#{msg.Tel}"/>
+                    <h:outputText id="tel" value="#{personBean.tel}"/>
+                    <h:outputLabel for="subscription" value="#{msg.subscriptionType}"/>
+                    <h:outputText id="subscription" value="#{personBean.subscription}"/>
+                </h:panelGrid>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</body>
+</html>

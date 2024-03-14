@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<students>
+    <student id="1">
+        <data>
+            <fname>Anna</fname>
+            <lname>Kowalska</lname>
+        </data>
+        <results>
+            <grade>5</grade>
+            <type>test</type>
+        </results>
+    </student>
+    <student id="2">
+        <data>
+            <fname>Jan</fname>
+            <lname>Nowak</lname>
+        </data>
+        <results>
+            <grade>3</grade>
+            <type>test</type>
+        </results>
+    </student>
+    <student id="3">
+        <data>
+            <fname>Wanda</fname>
+            <lname>Grzelak</lname>
+        </data>
+        <results>
+            <grade>4+</grade>
+            <type>test</type>
+        </results>
+    </student>
+</students>

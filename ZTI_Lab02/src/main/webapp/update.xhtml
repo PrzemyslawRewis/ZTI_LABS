@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<head>
+    <title>IGNORED</title>
+</head>
+
+<body>
+<ui:composition template="/templates/masterTemplate.xhtml">
+    <ui:define name="windowTitle">
+        #{msg.siteTitle}
+    </ui:define>
+
+    <ui:define name="content">
+
+        <div id="content">
+            #{msg.titleFormUpdate}
+            <h:form>
+                <h:panelGrid columns="3" frame="hsides" cellspacing="3">
+                    <h:outputLabel for="fname" value="#{msg.Firstname}"/>
+                    <h:inputText id="fname" value="#{personBean.fname}"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel for="lname" value="#{msg.Lastname}"/>
+                    <h:inputText id="lname" value="#{personBean.lname}"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel for="city" value="#{msg.City}"/>
+                    <h:inputText id="city" value="#{personBean.city}"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel for="email" value="#{msg.Email}"/>
+                    <h:inputText id="email" value="#{personBean.email}"/>
+                    <h:outputText value=""/>
+                    <h:outputLabel for="tel" value="#{msg.Tel}"/>
+                    <h:inputText id="tel" value="#{personBean.tel}"/>
+                    <h:outputText value=""/>
+                    <br/>
+                    <h:outputLabel for="mySelectOneMenu" value="#{msg.selectSubscription}"/>
+                    <h:selectOneMenu id="mySelectOneMenu" value="#{personBean.subscription}">
+                        <f:selectItem itemValue="TRIAL" itemLabel="Trial"/>
+                        <f:selectItem itemValue="PREMIUM" itemLabel="Premium"/>
+                    </h:selectOneMenu>
+                    <h:message for="mySelectOneMenu"/>
+                </h:panelGrid>
+                <h:inputHidden value="#{personBean.id}"></h:inputHidden>
+                <h:commandButton value="#{msg.saveLinkFormUpdate}" action="list"
+                                 actionListener="#{personBean.updatePerson}" id="update"/>
+
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</body>
+</html>
